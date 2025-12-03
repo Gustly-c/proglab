@@ -1,28 +1,99 @@
 @import "tailwindcss";
-@plugin './hero.ts';
-@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@plugin "./hero.ts";
+@source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
 @custom-variant dark (&:is(.dark *));
+
+/* Базовые токены темы — сразу в тёмном стиле комп-клуба */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020617;  /* почти чёрный, как в твоих страницах */
+  --foreground: #e5e7eb;  /* светлый текст */
 }
 
+/* Tailwind theme tokens */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+/* Если вдруг у пользователя тёмная тема в системе — оставляем наш тёмный стиль,
+   но можно чуть осветлить текст при желании */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #020617;
+    --foreground: #f9fafb;
   }
 }
 
+/* reset по высоте, чтобы градиент тянулся на весь экран */
+html,
 body {
-  background: var(--background);
+  min-height: 100%;
+}
+
+/* Глобальный фон: тёмный + неоновые подсветки по углам */
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(129, 140, 248, 0.25), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.18), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(244, 63, 94, 0.12), transparent 55%),
+    #020617;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
+}
+
+/* Чтобы основной контент не прижимался к краям на больших экранах */
+main {
+  min-height: 100vh;
+}
+
+/* Ссылки — аккуратные, без подчёркивания по умолчанию */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Небольшой твик для скроллбара в тёмной теме (только десктоп) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.8) rgba(15, 23, 42, 0.9);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6366f1, #22c55e);
+  border-radius: 999px;
+}
+
+/* Базовые заголовки под твой стиль */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #f9fafb;
+}
+
+/* Небольшой helper-класс, если захочешь оборачивать контент в "оболочку" */
+.app-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
 }
